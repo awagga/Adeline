@@ -1,0 +1,3 @@
+#!/usr/local/bin/apl
+
+⎕ ← ⍎ 2⎕NQ # 'GetEnvironment' 'EX'
