@@ -1,18 +1,31 @@
 const Eris = require("eris");
-const exec = require("child_process").exec;
-global.P   = console.log;
+const { exec, spawn } = require("child_process");
+global.P = console.log;
 
-const c    = new Eris.CommandClient(process.env.adeline, {}, { prefix: "?" });
+const c = new Eris.CommandClient(process.env.adeline, {}, { prefix: "?" });
 
-const I    = (s) => { P(s); return s; }
-const Fmt  = (s) => {       return "```haskell\n" + s + "```"; }
+const Fmt = (o) => {
+  return "```haskell\n" + `${o}`.substr(0,1500) + "```"
+};
 
 async function _cApl(msg, args) {
-  exec(I(`./R.apls "${args.join(" ")}"`),
- (error, stdout, stderr) => { c.createMessage(msg.channel.id, Fmt([stdout, stderr].filter(Boolean))); } 
-);}
+  exec(`./R.apls "${args.join(" ")}"`, (_error, stdout, stderr) => {
+    c.createMessage(msg.channel.id, Fmt([stdout, stderr].filter(Boolean)));
+  });
+}
+
+async function _cIjc(msg, args) {
+  I = spawn("I");
+
+  I.stdin.write(`${args.join(" ")}\n`);
+  I.stdout.on("data", (data) => {
+    c.createMessage(msg.channel.id, Fmt(data));
+    I.kill();
+  });
+}
 
 c.registerCommand("apl", _cApl);
+c.registerCommand("ijc", _cIjc);
 
 c.on("ready", async (_) => P("connected!"));
 
