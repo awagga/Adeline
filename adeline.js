@@ -1,16 +1,18 @@
 const Eris = require("eris");
 const exec = require("child_process").exec;
-global.P = console.log;
+global.P   = console.log;
 
-const c = new Eris.CommandClient(process.env.adeline, {}, { prefix: "?" });
+const c    = new Eris.CommandClient(process.env.adeline, {}, { prefix: "?" });
 
-const any = (v) => v.reduce((x, y) => (x ? x : y), undefined);
+const I    = (s) => { P(s); return s; }
+const Fmt  = (s) => {       return "```haskell\n" + s + "```"; }
 
-c.registerCommand("apl", async (msg, args) => {
-  exec(`export EX="${args.join(" ")}" && ./R.apls`, (error, stdout, stderr) => {
-    c.createMessage(msg.channel.id, "```" + any([stdout, stderr]) + "```");
-  });
-});
+async function _cApl(msg, args) {
+  exec(I(`./R.apls "${args.join(" ")}"`),
+ (error, stdout, stderr) => { c.createMessage(msg.channel.id, Fmt([stdout, stderr].filter(Boolean))); } 
+);}
+
+c.registerCommand("apl", _cApl);
 
 c.on("ready", async (_) => P("connected!"));
 
