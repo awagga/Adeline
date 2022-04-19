@@ -1,32 +1,23 @@
-const Eris = require("eris");
-const { exec, spawn } = require("child_process");
-global.P = console.log;
+import { CommandClient } from "eris"
+import  { exec, spawn }  from "child_process"
 
-const c = new Eris.CommandClient(process.env.adeline, {}, { prefix: "?" });
+const P = console.log
 
-const Fmt = (o) => {
-  return "```haskell\n" + `${o}`.substr(0,1500) + "```"
-};
+const c = new CommandClient(process.env.adeline, {}, { prefix: "?" })
 
-async function _cApl(msg, args) {
-  exec(`./R.apls "${args.join(" ")}"`, (_error, stdout, stderr) => {
-    c.createMessage(msg.channel.id, Fmt([stdout, stderr].filter(Boolean)));
-  });
+const F = (o) => { return "```haskell\n" + `${o}`.substring(0,1500) + "```" }
+
+async function APL(m, a) { const x = a.join(" ")
+ exec(`./exec.apl "${x}"`, (stdout, stderr) => { c.createMessage(m.channel.id, F([stdout, stderr].filter(Boolean))) })
+}
+async function   I(m, a) { const x = a.join(" ")
+ let proc = spawn("I"); proc.stdout.on("data", (data) => { c.createMessage(m.channel.id, F(data)); proc.kill() })
+ 
+ proc.stdin.write(`${x}\n`)
 }
 
-async function _cIjc(msg, args) {
-  I = spawn("I");
+c.registerCommand("apl", APL)
+c.registerCommand("i", I)
 
-  I.stdin.write(`${args.join(" ")}\n`);
-  I.stdout.on("data", (data) => {
-    c.createMessage(msg.channel.id, Fmt(data));
-    I.kill();
-  });
-}
 
-c.registerCommand("apl", _cApl);
-c.registerCommand("ijc", _cIjc);
-
-c.on("ready", async (_) => P("connected!"));
-
-c.connect();
+c.on("ready", async (_) => P("connected!"));c.connect()

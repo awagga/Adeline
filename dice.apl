@@ -1,7 +1,10 @@
-:NameSpace dice
+:NameSpace Dice
+
 ⎕IO ← 0
 
 P  ← ⊣⊂⍨1,2≠/⊢
+F  ← ⊃ ⊣/
+L  ← ⊃ ⊢/
 
 _I ← { 
     l ← ⍵∊⊂⍺
@@ -10,19 +13,10 @@ _I ← {
     ⊃,/⍺⍺@{∧/¨P l}⍵ P l
 }
 
-F ← ⊃ ⊣/
-L ← ⊃ ⊢/
-
-⍝ Doesn't handle parentheses
 Parse  ← {
     r  ← (⍵~' ') (⊣P∊) '0123456789'
     
     r {w ← ⊃⍵ ⋄ ⊂,/'(1⊥?'(F w)'⍴'(L w)')'}_I⍨∘, 'O'
 }
-
-⍝ Dice.Parse '1O20 + 1'
-⍝ ┌─────────┬─┬─┐
-⍝ │(+/?1⍴20)│+│1│
-⍝ └─────────┴─┴─┘
 
 :EndNameSpace
