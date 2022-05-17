@@ -1,6 +1,6 @@
-#!/usr/local/bin/apl
+#!/usr/local/bin/dyalogscript
 Ï ← ⎕FIX'file://',⊢
 
-Ï 'dice.apl'
+Ï 'utils.apl'
 
 ⎕ ← ⍎ ⊃0 1/ (2 ⎕NQ # 'GetCommandLineArgs')

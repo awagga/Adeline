@@ -1,23 +1,25 @@
-import { CommandClient } from "eris"
-import  { exec, spawn }  from "child_process"
+import Eris from "eris";import { spawn, exec } from "child_process";
 
-const P = console.log
+const P = console.log;
+const c = new Eris(process.env.adeline);
+const F = (o) => {
+  return "```haskell\n" + `${o}`.substring(0, 1500) + "```";
+};
 
-const c = new CommandClient(process.env.adeline, {}, { prefix: "?" })
-
-const F = (o) => { return "```haskell\n" + `${o}`.substring(0,1500) + "```" }
-
-async function APL(m, a) { const x = a.join(" ")
- exec(`./exec.apl "${x}"`, (stdout, stderr) => { c.createMessage(m.channel.id, F([stdout, stderr].filter(Boolean))) })
-}
-async function   I(m, a) { const x = a.join(" ")
- let proc = spawn("I"); proc.stdout.on("data", (data) => { c.createMessage(m.channel.id, F(data)); proc.kill() })
- 
- proc.stdin.write(`${x}\n`)
+async function dyalog(m, code) {
+    exec(`./session.apl "${code}"`, (stdout, stderr) => {
+      c.createMessage(m.channel.id, F([stdout, stderr].filter(Boolean)));
+    });
 }
 
-c.registerCommand("apl", APL)
-c.registerCommand("i", I)
+async function handle(m) { 
+  let proc = spawn("./exec.apl", [`Utils.Format '${m.content.replace(/'/g,"''")}'`]);
+  proc.stderr.on("data", (r) => { return P(r.toString()) });
+  proc.stdout.on("data", (r) => {
+    let code = r.toString().split(" ");if (code[0] == "dyalog)") dyalog(m, code.slice(1).join(" ").trim());
+  });
+}
 
-
-c.on("ready", async (_) => P("connected!"));c.connect()
+c.on("messageCreate", async (m) => { if (!m.author.bot) handle(m);});
+c.on("ready"        , async (_) => P("connected!"));
+c.connect();
