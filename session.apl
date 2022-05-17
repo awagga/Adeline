@@ -12,4 +12,4 @@
 Ï 'dice.apl'
 Ï 'Safe.dyalog'
 
-⎕ ← ⍎ ⊃0 1/ (2 ⎕NQ # 'GetCommandLineArgs')
+⎕ ← Safe.Exec ⊃0 1/ (2 ⎕NQ # 'GetCommandLineArgs')
