@@ -7,9 +7,9 @@
 
 ⎕SE⎕WS'File' '/opt/mdyalog/18.2/64/unicode/default.dse' ⋄ 2⎕NQ⎕SE'FileRead'
 
-⎕SE.UCMD'box on -style=max -trains=tree'
-
 Ï 'dice.apl'
-Ï 'Safe.dyalog'
 
-⎕ ← Safe.Exec ⊃0 1/ (2 ⎕NQ # 'GetCommandLineArgs')
+display {
+    ⍳11::⎕DMX.EM,': ',⎕DMX.Message
+    ⍎ ⊃0 1/ (2 ⎕NQ # 'GetCommandLineArgs')
+}⍬
