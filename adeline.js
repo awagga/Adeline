@@ -3,7 +3,7 @@ import { spawn } from "child_process";
 import {  once } from "events"       ;
 
 const Print  = console.log;
-const Format = (string) => { return "```" + `${string}`.substring(0, 1800) + "```" };
+const Format = (string) => { return "```" + `${string}`.substring(0, 1990) + "```" };
 
 const client = new Eris(process.env.adeline);
 
@@ -24,9 +24,12 @@ async function APL(msg, input) {
 async function handle(msg) {
   if (!msg.content.includes("dyalog)")) return;
 
-  let vcode = JSON.parse(await APL(msg, "Msg.Handle '" + msg.content.replace(/'/g, "''") + "'"))
-
-  for (const c of vcode) { client.createMessage(msg.channel.id, Format(await APL(msg, c))) }
+  for (const c of JSON.parse(
+    await APL(msg,
+       "(Msg.Handle)'" + msg.content.replace(/'/g, "''") + "'")
+  )) 
+    client.createMessage(msg.channel.id,
+      Format(await APL(msg, "(display)" + c))); 
 }
 
 client.on("messageCreate", async (msg) => { if (msg.author.id != client.user.id) handle(msg) });
