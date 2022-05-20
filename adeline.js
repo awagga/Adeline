@@ -22,7 +22,7 @@ async function APL(msg, input) {
 }
 
 async function handle(msg) {
-  if (!msg.content.includes("dyalog]")) return;
+  if (!msg.content.includes("dyalog)")) return;
 
   let vcode = JSON.parse(await APL(msg, "Msg.Handle '" + msg.content.replace(/'/g, "''") + "'"))
 
