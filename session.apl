@@ -15,4 +15,3 @@
     ⍳11::⎕DMX
     ⍎ ⊃0 1/ (2 ⎕NQ # 'GetCommandLineArgs')
 }⍬
-

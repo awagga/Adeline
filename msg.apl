@@ -3,19 +3,14 @@
 Ⓤ ← {⍺←⊢ ⋄ (⍵⍵⍣¯1)⍺(⍺⍺⍥⍵⍵)⍵}
 Ⓞ ← {⍺←⊢ ⋄ ((⍺⍺ ⍺)⍵⍵⊢)⍵}
 
-
-Baln ← (∧\Ⓤ⌽≠\)Ⓞ<
-
-
-Format ← { 
+Format ← {
+  Baln ← (∧\Ⓤ⌽≠\)Ⓞ<
   Srnd ← (,∘0)0,⊢
   tkns ← (0 1 0)(0 1 1 0)(0 1 1 1 0)
   locs ← ('`'∘=)⍵
-  mask ← {⍵ ∧ ⊃∨/, ¯1 ¯2 ¯3 ∘.⌽ tkns (Baln ⍷)¨ ⊂⍵}Ⓤ(Srnd) locs
+  mask ← (⊢ ∧∘⊃ ¯1 ¯2 ¯3 ∨.⌽ tkns ∨.(Baln ⍷) ⊂)Ⓤ(Srnd) locs
   ⍵ ⊆⍨ 0 = mask
 }
-
-Trim  ← {⍵/⍨2∨/0,⍨' '≠⍵}
 
 Parse ← {
   n←≢d←'dyalog)'
