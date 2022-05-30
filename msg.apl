@@ -11,7 +11,7 @@ Format ← {
   Mask ← '`'∘=
   Find ← ⊃Ⓞ⍷⍤0 1       ⍝ Rows reflect appearance of each token
 
-  Hrcy ← ∨⌿∧(=⌿≠\Ⓞ∨)                ⍝ Hierarchy of tokens
+  Hrcy ← ∨⌿Ⓤ(≠\)                    ⍝ Hierarchy of tokens
   Orig ← ∧∘(¯1 ¯2 ¯3 (∨⌿⌽⍤0 1) ⊢)   ⍝ Find⍣¯1; replace 1s with corresponding token
 
   (~ {⍵ Orig Hrcy Baln tkns Find ⍵}Ⓤ Srnd⍤Mask)Ⓞ⊆ ⍵
