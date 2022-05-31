@@ -20,7 +20,7 @@ Format ← {
   Real ← ∧∘(∨⌿¯1 ¯2 ¯3⌽⍙⊢)   ⍝ Replace remaining 1s with original sequences; Find⍣¯1
 
   ⍝ Represent code-blocks as nested vector
-  ⍵ ⊆⍨ ~mask Real∘Leap∘Pair (tokens∘Find)Ⓤ(Pad)mask 
+  ⍵ ⊆⍨ ~(⊢ Real∘Leap∘Pair tokens∘Find)Ⓤ(Pad)mask 
 }
 
 Parse ← {
