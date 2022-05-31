@@ -26,7 +26,7 @@ async function handle(msg) {
 
   for (const c of JSON.parse(
     await APL(msg,
-       "(Msg.Handle)'" + msg.content.replace(/'/g, "''") + "'")
+       "(Command.Handle)'" + msg.content.replace(/'/g, "''") + "'")
   )) 
     client.createMessage(msg.channel.id,
       Format(await APL(msg, "(display)" + c))); 
