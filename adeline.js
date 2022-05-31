@@ -3,7 +3,7 @@ import { spawn } from "child_process";
 import {  once } from "events"       ;
 
 const Print  = console.log;
-const Format = (string) => { return "```" + `${string}`.substring(0, 1990) + "```" };
+const Format = (string) => { return "```" + `${string}`.substring(0, 1993) + "```" };
 
 const client = new Eris(process.env.adeline);
 
@@ -14,7 +14,7 @@ async function APL(msg, input) {
   
   process.stdout.on("data", (data) => { output += data.toString() });
 
-  var timeout = setTimeout(() => { process.kill("SIGINT");
+  var timeout = setTimeout(() => { process.kill();
     client.createMessage(msg.channel.id, Format("EXPRESSION TIME LIMIT EXCEEDED: Must complete within 10 seconds"))
   }, 10000);
 
