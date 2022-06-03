@@ -8,20 +8,18 @@ const c = new Eris(process.env.adeline);
 
 async function A(i) {
   let p = spawn("./apl", [i]);
-  let o = "";
-  
+
+  var t = setTimeout(( ) => { o += "EXPRESSION TIME LIMIT EXCEEDED: Must complete within 10 seconds"; p.kill()}, 10000);
   p.stdout.on("data",(d) => { o += d.toString()});
-         p.on("exit",( ) => { clearTimeout(t)});
-  var t = setTimeout(( ) => { o += "EXPRESSION TIME LIMIT EXCEEDED: Must complete within 10 seconds"
-    p.kill()}, 10000);
+         p.on("exit",( ) => {  clearTimeout(t) });
   
-  await once(p, "exit");return o;
+  let o = "";await once(p, "exit");return o;
 }
 
 async function H(m) {
   let s = "(Command.Handle)" + "'" + m.content.replace(/'/g, "''") + "'";
   let v = JSON.parse(await A(s));
-  for (let u of v) c.createMessage(m.channel.id, F(await A("(display)" + u))); 
+  await Promise.all(v.map(async (u) => { c.createMessage(m.channel.id, F(await A("(display)" + u))) }))
 }
 
 c.on("messageCreate",async(m) => H(m));
