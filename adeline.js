@@ -2,37 +2,28 @@ import    Eris   from "eris"         ;
 import { spawn } from "child_process";
 import {  once } from "events"       ;
 
-const Print  = console.log;
-const Format = (string) => { return "```" + `${string}`.substring(0, 1993) + "```" };
+const P = console.log;
+const F = (o) => { return "```" + o.slice(0, 1993) + "```" };
+const c = new Eris(process.env.adeline);
+const S = c.createMessage;
 
-const client = new Eris(process.env.adeline);
+async function A(m,i) {
+  let p = spawn("./apl", [i]);
 
-async function APL(msg, input) {
-  let process = spawn("./session.apl", [input]);
+  let o = "";p.stdout.on("data", (d) => { o += d.toString() });
+
+  var timeout = setTimeout(() => { p.kill();S(m.channel.id,
+    F("EXPRESSION TIME LIMIT EXCEEDED: Must complete within 10 seconds")) }, 10000);
   
-  let output = ""; 
-  
-  process.stdout.on("data", (data) => { output += data.toString() });
-
-  var timeout = setTimeout(() => { process.kill();
-    client.createMessage(msg.channel.id, Format("EXPRESSION TIME LIMIT EXCEEDED: Must complete within 10 seconds"))
-  }, 10000);
-
-  process.on("exit", () => { clearTimeout(timeout) });await once(process, "exit");return output;
+  p.on("exit", () => { clearTimeout(timeout) });await once(p, "exit");return o;
 }
 
-async function handle(msg) {
-  if (!msg.content.includes("dyalog)")) return;
-
-  for (const c of JSON.parse(
-    await APL(msg,
-       "(Command.Handle)'" + msg.content.replace(/'/g, "''") + "'")
-  )) 
-    client.createMessage(msg.channel.id,
-      Format(await APL(msg, "(display)" + c))); 
+async function H(m) {
+  let s = "(Command.Handle)" + "'" + m.content.replace(/'/g, "''") + "'";
+  let v = JSON.parse(await A(m,s));
+  for (let u of v) S(m.channel.id, F(await A(m, "(display)" + u))); 
 }
 
-client.on("messageCreate", async (msg) => { if (msg.author.id != client.user.id) handle(msg) });
-client.on("ready"        , async (_)   => Print("connected!"));
-
-client.connect();
+c.on("messageCreate", async (m) => H(m));
+c.on("ready"        , async (_) => P(1));
+c.connect();
