@@ -19,7 +19,9 @@ async function A(i) {
 async function H(m) {
   let s = "(Command.Handle)" + "'" + m.content.replace(/'/g, "''") + "'";
   let v = JSON.parse(await A(s));
-  await Promise.all(v.map(async (u) => { c.createMessage(m.channel.id, F(await A("(display)" + u))) }))
+  
+  await v.reduce(async (promise, u) => {
+    await promise;c.createMessage(m.channel.id, F(await A("(display)" + u)));}, Promise.resolve());
 }
 
 c.on("messageCreate",async(m) => H(m));
