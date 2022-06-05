@@ -24,15 +24,17 @@ Format ← {
 }
 
 Parse ← {
-  n←≢prfx←⍺
+  n←≢⍺
 
   ⍝ Indicate characters after prefix
-  Mark ← (⊃ ∧∘Ⓣ 0=(n↑1)∘Ⓡ)(<\prfx∘⍷)
-
-  (⊂'')~⍨ ((⍸Mark)⌷⍙⊢)¨⍵   ⍝ Selects indicated characters - removing N/A blocks
+  Mark ← (⊃ ∧∘Ⓣ 0=(n↑1)∘Ⓡ)(<\⍺∘⍷)
+  
+  ⍺,⍥⊂((⍸Mark)⌷⍙⊢)⍵   ⍝ Selects indicated characters
 }
 
-⍝ Recieves a possibly formatted command, returns JSON repr of APL-strings (to be executed).
-Handle ← ⎕JSON 'dyalog)' Parse Format
+prefixes ← 'i)' 'dyalog)'
+
+⍝ Recieves a formatted command, returns JSON repr of tagged (possibly empty) language-strings.
+Handle ← {⎕JSON ⊃,/ prefixes∘(⊃Ⓞ(⊂Parse)⍙) ¨ Format ⍵}
 
 :EndNameSpace

@@ -1,30 +1,41 @@
-import    Eris   from "eris"         ;
-import { spawn } from "child_process";
-import {  once } from "events"       ;
-import    kill   from "tree-kill"    ;
+import   Eris       from "eris"
+import { execFile } from "child_process"
+import { once }     from "events"
+import   kill       from "tree-kill"
 
-const P = console.log;
-const F = (s) => { return "```" + s.slice(0, 1993) + "```" };
-const c = new Eris(process.env.adeline);
+let languages = { "i)": "echo", "dyalog)": "./dyalog" }
 
-async function A(i) {
-  let p = spawn("./apl", [i]);
+async function execute(lang, source) { const child = execFile(lang, [source]); let output = ""
+  const tid = setTimeout(() => {
+    output += "EXPRESSION TIME LIMIT EXCEEDED: Must complete within 10 seconds"
+    kill(child.pid, "SIGKILL")
+  }, 10000)
 
-  var t = setTimeout(( ) => { o += "EXPRESSION TIME LIMIT EXCEEDED: Must complete within 10 seconds";kill(p.pid, 'SIGKILL')}, 10000);  
-  p.stdout.on("data",(d) => { o += d.toString()});
-         p.on("exit",( ) => {  clearTimeout(t) });
+  child.stdout.on("data", (data) => { output += data.toString() })
   
-  let o = "";await once(p, "exit");return o;
+  child.on("exit", () => { clearTimeout(tid) })
+
+  await once(child, "exit")
+
+  return output
 }
 
-async function H(m) {
-  let s = "(Command.Handle)" + "'" + m.content.replace(/'/g, "''") + "'";
-  let v = JSON.parse(await A(s));
-  
-  await v.reduce(async (promise, u) => {
-    await promise;c.createMessage(m.channel.id, F(await A("(display)" + u)))}, Promise.resolve());
-}
+const client = new Eris(process.env.adeline)
+client.on("messageCreate", async (msg) => {
+  if (!Object.keys(languages).some(k => msg.content.includes(k))) return;
 
-c.on("messageCreate",async(m) => H(m));
-c.on("ready"        ,async(_) => P(1));
-c.connect();
+  if (msg.author.id == client.user.id) return;
+
+  const v = JSON.parse( // Vector of code-blocks
+    await execute(
+      "./dyalog",
+      "Command.Handle" + "'" + msg.content.replace(/'/g, "''") + " '" // Prepend space; scalar -> vector
+    ))
+
+  await v.reduce(async (promise, block) => { await promise
+    if (block[1]) // Was language prefix present?
+      client.createMessage(
+        msg.channel.id,
+        "```" + (await execute(languages[block[0]], block[1])) + "```" )
+  }, Promise.resolve())})
+client.connect()
