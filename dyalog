@@ -1,16 +1,24 @@
 #!/usr/local/bin/dyalogscript
 Ï ← ⎕FIX'file://',⊢
 
-⎕IO ← 1
-
-'display'⎕CY'dfns'
+Ï 'Safe.dyalog' ⋄ Ï 'cmd.apl' ⋄ 'display'⎕cy'dfns'
 
 
-⎕SE⎕WS'File' '/opt/mdyalog/18.2/64/unicode/default.dse' ⋄ 2⎕NQ⎕SE'FileRead'
+∇ r ← Run expr;ns
 
-Ï 'cmd.apl'
+    ns←⎕NS ⍬
+    ns.Command ← Command ⋄ ns.display ← display
+    :Trap 0
+        r←5 ns Safe.Exec expr
+    :Case 6
+        r←'Shy.'
+    :Case 10 ⍝ timeout
+        r←'EXPRESSION TIME LIMIT EXCEEDED: Must complete within 5 seconds'
+    :Case 11 ⍝ illegal
+        r←'Illegal Token.'
+    :Else
+        r←⎕DMX.(Message{⍵,⍺,⍨': '/⍨×≢⍺}⎕EM 200|EN-200)
+    :EndTrap
+∇
 
-{
-    ⍳11::⎕DMX
-    ⍎ ⊃0 1/ (2 ⎕NQ # 'GetCommandLineArgs')
-}⍬
+⎕ ← ⎕JSON {,↓ ⍕ Run ⍵}¨ Run ⊃0 1/ (2 ⎕NQ # 'GetCommandLineArgs') 

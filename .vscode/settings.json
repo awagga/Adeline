@@ -1,3 +1,6 @@
 {
-    "editor.fontFamily": "SAX2"
+  "editor.fontFamily": "SAX2",
+  "files.associations": {
+    "*.*": "plaintext"
+  }
 }
