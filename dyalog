@@ -23,6 +23,7 @@
     :If 0=×/⍴r ⋄ r ← 'Empty.' ⋄ :EndIf
 ∇
 
-lf ← ⎕UCS 10
+lf  ← ⎕UCS 10
 
-⎕ ← {⍪'```'(⍕Run ⊃⍵)'```'}⍤0 ⊆Run ⊃0 1/ (2 ⎕NQ # 'GetCommandLineArgs')
+
+⎕ ← 1 ⎕JSON ⊃,/⊆¨⊂⍤¯1¨ ,{'```'(⍕Run ⊃⍵)'```'}⍤0 ⊆Run ⊃0 1/ (2 ⎕NQ # 'GetCommandLineArgs')

@@ -29,7 +29,7 @@ Parse ← {
 
   Mark ← {prefix≡⍵:⍬ ⋄ (⊃ ∧∘T 0=(n↑1)∘R) <\prefix⍷⍵}
 
-  (⊂'')~⍨ ((⍸Mark)⌷V⊢)¨⍵   ⍝ Selects indicated characters - removing N/A blocks
+  (⊂'')~⍨ ((⍸Mark)⌷V⊢)¨⍵   ⍝ Selects indicated characters - removing N/A blocks;
 }
 
 ⍝ Recieves a possibly formatted command, returns APL-strings (to be executed).
