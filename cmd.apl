@@ -24,10 +24,10 @@ Format ← {
 }
 
 Parse ← {
-  n←≢⍺
-
   ⍝ Indicate characters after prefix
-  Mark ← (⊃ ∧∘T 0=(n↑1)∘R)(<\⍺∘⍷)
+  n←≢prefix←⍺
+
+  Mark ← {prefix≡⍵:⍬ ⋄ (⊃ ∧∘T 0=(n↑1)∘R) <\prefix⍷⍵}
 
   (⊂'')~⍨ ((⍸Mark)⌷V⊢)¨⍵   ⍝ Selects indicated characters - removing N/A blocks
 }

@@ -19,6 +19,10 @@
     :Else
         r←⎕DMX.(Message{⍵,⍺,⍨': '/⍨×≢⍺}⎕EM 200|EN-200)
     :EndTrap
+
+    :If 0=×/⍴r ⋄ r ← 'Empty.' ⋄ :EndIf
 ∇
 
-⎕ ← ⎕JSON {,↓ ⍕ Run ⍵}¨ Run ⊃0 1/ (2 ⎕NQ # 'GetCommandLineArgs') 
+lf ← ⎕UCS 10
+
+⎕ ← {⍪'```'(⍕Run ⊃⍵)'```'}⍤0 ⊆Run ⊃0 1/ (2 ⎕NQ # 'GetCommandLineArgs')
