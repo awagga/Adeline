@@ -1,4 +1,0 @@
-#!/usr/local/bin/dyalogscript
-
-⎕ ← ⍴2 ⎕NQ # 'GetCommandLineArgs'
-⎕ ← ⍴¨2 ⎕NQ # 'GetCommandLineArgs' 
