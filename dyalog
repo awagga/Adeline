@@ -12,9 +12,9 @@
         r←5 ns Safe.Exec expr
     :Case 6
         r←'Shy.'
-    :Case 10 ⍝ timeout
+    :Case 10
         r←'EXPRESSION TIME LIMIT EXCEEDED: Must complete within 5 seconds'
-    :Case 11 ⍝ illegal
+    :Case 11
         r←'Illegal Token.'
     :Else
         r←⎕DMX.(Message{⍵,⍺,⍨': '/⍨×≢⍺}⎕EM 200|EN-200)
@@ -26,4 +26,4 @@
 lf  ← ⎕UCS 10
 
 
-⎕ ← 1 ⎕JSON ⊃,/⊆¨⊂⍤¯1¨ ,{'```'(⍕Run ⊃⍵)'```'}⍤0 ⊆Run ⊃0 1/ (2 ⎕NQ # 'GetCommandLineArgs')
+⎕ ← 1 ⎕JSON ⊃,/(⊆⊂⍤¯1)¨ ,{'```'(⍕Run ⊃⍵)'```'}⍤0 ⊆Run ⊃0 1/ (2 ⎕NQ # 'GetCommandLineArgs')

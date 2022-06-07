@@ -25,9 +25,7 @@ Format ← {
 
 Parse ← {
   ⍝ Indicate characters after prefix
-  n←≢prefix←⍺
-
-  Mark ← {prefix≡⍵:⍬ ⋄ (⊃ ∧∘T 0=(n↑1)∘R) <\prefix⍷⍵}
+  Mark ← (⊃ ∧∘T 0=(1↑⍨1-≢⍺)∘R)(<\⍺∘⍷)
 
   (⊂'')~⍨ ((⍸Mark)⌷V⊢)¨⍵   ⍝ Selects indicated characters - removing N/A blocks;
 }
