@@ -25,7 +25,15 @@
 
 lf  ← ⎕UCS 10
 
-Truncate ← { m ← ⊃,/(<\1⍴⍨≢)¨⍵ ⋄ r ← (+\m) ⊆⍥((1997-+/2000↑m)↑⊢) ⊃,/⍵ ⋄ (,⊂'```'){⍵,⍺↑⍨⍺≢,⊢/⍵}r }
+Truncate ← {
+    w ← ⊃,/⍵
+    umsk   ← ⊃,/(<\1⍴⍨≢)¨⍵
+    offset ← +/2000↑umsk
+    lim    ← 1997-offset
+    lim>≢w:⍵
+    lines  ← (+\umsk) ⊆⍥(lim↑⊢) w
+    lines,,⊂'```'
+}
 
 
 ⎕ ← 1 ⎕JSON Truncate ⊃,/(⊆⊂⍤¯1)¨ ,{'```'(⎕FMT Run ⊃⍵)'```'}⍤0 ⊆ ⍎2 ⎕NQ # 'GetEnvironment',⊂'expr'
