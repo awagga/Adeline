@@ -1,0 +1,1 @@
+dyalog) display (⊂⍣100),'  '

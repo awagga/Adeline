@@ -3,6 +3,8 @@
 
 Ï 'Safe.dyalog' ⋄ Ï 'cmd.apl' ⋄ 'display'⎕cy'dfns'
 
+Ⓞ ← {⍺←⊢ ⋄ ((⍺⍺ ⍺)⍵⍵⊢)⍵}
+
 ∇ r ← Run expr;ns
 
     ns ← ⎕NS ⍬
@@ -23,17 +25,13 @@
     :If 0=×/⍴r ⋄ r ← 'Empty' ⋄ :EndIf
 ∇
 
-lf  ← ⎕UCS 10
-
-Truncate ← {
+Shrink ← { 
     w ← ⊃,/⍵
-    umsk   ← ⊃,/(<\1⍴⍨≢)¨⍵
-    offset ← +/2000↑umsk
-    lim    ← 1997-offset
-    lim>≢w:⍵
-    lines  ← (+\umsk) ⊆⍥(lim↑⊢) w
-    lines,,⊂'```'
+    m ← ≢¨⍵
+    o ← 1997(⊣-+.>)+\1,m
+    o>≢w:⍵
+    r ← w⊆⍨(≢w)↑o↑⍸m
+    r,⊂'```'
 }
 
-
-⎕ ← 1 ⎕JSON Truncate ⊃,/(⊆⊂⍤¯1)¨ ,{'```'(⎕FMT Run ⊃⍵)'```'}⍤0 ⊆ ⍎2 ⎕NQ # 'GetEnvironment',⊂'expr'
+⎕ ← 1 ⎕JSON Shrink ⊃,/(⍬ ,⍨⍥('```'⊂Ⓞ,⊢)∘↓ ⎕FMT⍤Run)¨ ⍎ 2 ⎕NQ # 'GetEnvironment',⊂'expr'
