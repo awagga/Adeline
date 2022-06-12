@@ -5,7 +5,7 @@
 
 Ⓞ ← {⍺←⊢ ⋄ ((⍺⍺ ⍺)⍵⍵⊢)⍵}
 
-∇ r ← Run expr;ns
+∇ r ← Exec expr;ns
 
     ns ← ⎕NS ⍬
     ns.display ← display
@@ -27,11 +27,10 @@
 
 Shrink ← { 
     w ← ⊃,/⍵
-    m ← ≢¨⍵
-    o ← 1997(⊣-+.>)+\1,m
-    o>≢w:⍵
-    r ← w⊆⍨(≢w)↑o↑⍸m
-    r,⊂'```'
+    len ← ≢¨⍵
+    lim ← 2000((3-⍨⊣)-+.>)+\1,len
+    lim>≢w:⍵
+    '```' ,∘⊂⍨ w⊆⍨(≢w)↑lim↑⍸len
 }
 
-⎕ ← 1 ⎕JSON Shrink ⊃,/(⍬ ,⍨⍥('```'⊂Ⓞ,⊢)∘↓ ⎕FMT⍤Run)¨ ⍎ 2 ⎕NQ # 'GetEnvironment',⊂'expr'
+⎕ ← 1 ⎕JSON Shrink ⊃,/{((⊂⍤¯1) ⎕FMT Exec ⍵),⍥('```'⊂Ⓞ,⊢)⍬}¨ ⍎ 2 ⎕NQ # 'GetEnvironment',⊂'expr'
