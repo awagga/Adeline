@@ -5,7 +5,7 @@
 ⍙ ← {⍺←⊢ ⋄ ⍺(⍺⍺⍤¯1 0 99)⍵}
 Ⓡ ← ≢⍤⊢↑⍪
 
-⍝ Indicate tail of booleans
+⍝ Indicate tail of boolean array
 Ⓣ ← ∧\Ⓤ⌽
 
 Format ← {
