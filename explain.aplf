@@ -1,0 +1,33 @@
+∇ expr ← valence Explain train
+ :With ⎕NS ⍬
+    f       ← '+-×÷⌈⌊*⍟|!○~∨∧⍱⍲<≤=≥>≠≡≢⍴,⍪⍳↑↓?⍒⍋⍉⌽⊖∊⊥⊤⍎⍕⌹⊂⊃∪∩⍷⌷⊆⊣⊢⍸'
+    m∆op    ← '/⌿\⍀¨&⍨⌶⌸'
+    d∆op    ← '.@∘⍣⍥⍠⍤⌺'
+    slashes ← '/⌿\⍀'
+
+    Pad  ← '('∘,,∘')'
+    Fl   ← ⊃,/
+    Name ← ' ',⍨,∘⍕∘⎕UCS
+
+    (f∆n m∆n d∆n s∆n) ← (' P'∘Name¨¨f m∆op d∆op),⊂' S'∘Name¨slashes
+
+    _Lit←⍠'Regex' 0
+    train ← ((,d∆op∘.,slashes)⎕R(,d∆op∘.,s∆n,¨' ')_Lit)train ⍝ @/
+
+    _Assign_ ← {⍎Fl ⍺ ⍺⍺(⍕⍵)⍵⍵}
+    (f∆n,s∆n)('←{⍺←⊢ ⋄ r ← (⍕⍺),'''_Assign_''',(⍕⍵) ⋄ ⍬≢⍵: Pad r ⋄ r}')¨f,slashes
+
+    (m∆n)('←{⍺←⊢ ⋄ Fl Pad ⍺(⍺⍺ ⍬)'''_Assign_'''        ⍵}')¨m∆op
+    (d∆n)('←{⍺←⊢ ⋄ Fl Pad ⍺(⍺⍺,⍬)'''_Assign_''' (⍵⍵,⍬) ⍵}')¨d∆op
+
+    P9064 ← {⍺←⊢ ⋄ ⍵≡⍬: Fl (⍺⍺ ⍬)'⍨'       ⋄ ⍺ (⍺⍺⍨) ⍵}
+    P9061 ← {⍺←⊢ ⋄ ⍵≡⍬: Fl (⍺⍺ ⍬)'⍥'(⍵⍵ ⍬) ⋄ ⍺ ⍺⍺⍥⍵⍵ ⍵}
+    P8728 ← {⍺←⊢ ⋄ ⍵≡⍬: Fl (⍺⍺ ⍬)'∘'(⍵⍵ ⍬) ⋄ ⍺ ⍺⍺∘⍵⍵ ⍵}
+    P9060 ← {⍺←⊢ ⋄ ⍵≡⍬: Fl (⍺⍺ ⍬)'⍤'(⍵⍵ ⍬) ⋄ ⍺ ⍺⍺⍤⍵⍵ ⍵}
+
+    Fun ← ⍎((,¨f,m∆op,d∆op)⎕R(f∆n,m∆n,d∆n)_Lit)train
+
+    expr ← (Fun '⍵')(⊣⍣(valence=1))('⍺'Fun'⍵')
+
+ :EndWith
+∇

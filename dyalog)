@@ -1,7 +1,7 @@
 #!/usr/local/bin/dyalogscript
-Ï ← ⎕FIX'file://',⊢
+Ï ← 2 ⎕FIX'file://',⊢
 
-Ï 'Safe.dyalog' ⋄ Ï 'cmd.apl' ⋄ 'display'⎕cy'dfns'
+Ï 'Safe.dyalog' ⋄ Ï 'cmd.apl' ⋄ 'display'⎕cy'dfns' ⋄  Ï 'explain.aplf'
 
 Ⓞ ← {⍺←⊢ ⋄ ((⍺⍺ ⍺)⍵⍵⊢)⍵}
 
@@ -9,6 +9,7 @@
 
     ns ← ⎕NS ⍬
     ns.display ← display
+    ns.explain ← Explain
     
     :Trap 0
         r←5 ns Safe.Exec expr
@@ -27,10 +28,11 @@
 
 Shrink ← { 
     w ← ⊃,/⍵
-    len ← ≢¨⍵
-    lim ← 2000((3-⍨⊣)-+.>)+\1,len
-    lim>≢w:⍵
-    '```' ,∘⊂⍨ w⊆⍨(≢w)↑lim↑⍸len
+    n ← ≢w
+    l ← ≢¨⍵
+    s ← 2000((3-⍨⊣)-+.>)+\1,l
+    s>n : ⍵
+    '```' ,∘⊂⍨ w⊆⍨n↑s↑⍸l
 }
 
 ⎕ ← 1 ⎕JSON Shrink ⊃,/{((⊂⍤¯1) ⎕FMT Exec ⍵),⍥('```'⊂Ⓞ,⊢)⍬}¨ ⍎ 2 ⎕NQ # 'GetEnvironment',⊂'expr'
