@@ -1,10 +1,16 @@
-## Examples
-dyalog) 3 3⍴⍳9
+Adeline evaluates APL code preceeded by dyalog) - the prefix.
 
-first `⍵` natural numbers `dyalog) {⍳⍵}10` 
+# Examples:
 
-One approach is `dyalog) 1 + 3`, another is `dyalog) 2 + 2`
+List first 5 natural numbers: `dyalog) ⍳5`
 
-## Tests:
+Placing code in blocks allows for comments (as seen above).
+And for many statements to be evaluated at once.
 
-`dyalog) ''` `dyalog) ' '` `dyalog) 3 3⍴⍳9` `dyalog) ÷0` `Invalid` `dyalog) display ⍳2 2 2`
+E.g: If X `dyalog) 'Hello, '` otherwise Y: `dyalog) ' World!'`
+
+# Commands:
+
+"dyalog)" Can also interface with Adeline's "commands".
+
+To list them: `dyalog) help`

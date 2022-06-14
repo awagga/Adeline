@@ -1,7 +1,11 @@
 #!/usr/local/bin/dyalogscript
-Ï ← 2 ⎕FIX'file://',⊢
+Ï ← 2 ⎕FIX 'file://',⊢
 
-Ï 'Safe.dyalog' ⋄ Ï 'cmd.apl' ⋄ 'display'⎕cy'dfns' ⋄  Ï 'explain.aplf'
+Ï 'Safe.dyalog'
+Ï 'cmd.apl'
+Ï 'explain.aplf'
+Ï 'help.aplf'
+'display'⎕cy'dfns'
 
 Ⓞ ← {⍺←⊢ ⋄ ((⍺⍺ ⍺)⍵⍵⊢)⍵}
 
@@ -10,6 +14,7 @@
     ns ← ⎕NS ⍬
     ns.display ← display
     ns.explain ← Explain
+    ns.help    ← Help
     
     :Trap 0
         r←5 ns Safe.Exec expr
