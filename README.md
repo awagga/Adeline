@@ -1,6 +1,6 @@
 Adeline evaluates APL code preceeded by dyalog) - the prefix.
 
-# Examples:
+### Examples:
 
 List first 5 natural numbers: `dyalog) ⍳5`
 
@@ -9,7 +9,7 @@ And for many statements to be evaluated at once.
 
 E.g: If X `dyalog) 'Hello, '` otherwise Y: `dyalog) ' World!'`
 
-# Commands:
+### Commands:
 
 "dyalog)" Can also interface with Adeline's "commands".
 

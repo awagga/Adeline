@@ -2,9 +2,9 @@
 
 lf ← ⎕UCS 10
 
-msg  ←⊂ '⍝ ∇ arity explain expr'
-msg ,←⊂ '⍝ (verbose) explicit form of point-free expression.'
-msg ,←⊂ 'dyalog) 1 explain ''+⌿÷≢'''
+msg  ←⊂ '⍝ ∇ {arity} explain expr'
+msg ,←⊂ '⍝ explicit form of point-free expression.'
+msg ,←⊂ 'dyalog) 2 explain ''+⌿÷≢'''
 msg ,←⊂ lf
 
 msg ,←⊂ '⍝ ∇ help'
