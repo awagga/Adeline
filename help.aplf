@@ -1,16 +1,14 @@
 ∇ msg ← Help;lf
 
-lf ← ⎕UCS 10
-
 msg  ←⊂ '⍝ ∇ {arity} explain expr'
 msg ,←⊂ '⍝ explicit form of point-free expression.'
 msg ,←⊂ 'dyalog) 2 explain ''+⌿÷≢'''
-msg ,←⊂ lf
+msg ,← ' '
 
 msg ,←⊂ '⍝ ∇ help'
-msg ,←⊂ '⍝ enumerates commands'
+msg ,←⊂ '⍝ enumerate commands'
 msg ,←⊂ 'dyalog) help'
-msg ,←⊂ lf
+msg ,← ' '
 
 msg ,←⊂ '⍝ ∇ display X'
 msg ,←⊂ '⍝ ]box on -style=max'

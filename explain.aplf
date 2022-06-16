@@ -1,38 +1,44 @@
-∇ expr ← {valence} Explain train
- :With ⎕NS ⍬
-   valence←{0::1⋄valence}⍬
-    F ← ⊃,/
-    train ← F ''''''∘,¨@(''''∘=)train
-    f       ← '+-×÷⌈⌊*⍟|!○~∨∧⍱⍲<≤=≥>≠≡≢⍴,⍪⍳↑↓?⍒⍋⍉⌽⊖∊⊥⊤⍎⍕⌹⊂⊃∪∩⍷⌷⊆⊣⊢⍸'
-    m∆op    ← '/⌿\⍀¨&⍨⌶⌸'
-    d∆op    ← '.@∘⍛⍣⍥⍠⍤⌺'
-    slashes ← '/⌿\⍀'
+∇  expr←{valence}Explain train
+ :With ⎕NS'' ⋄ valence←{0::1 ⋄ valence}''
 
-    Pad  ← '('∘,,∘')'
-    Name ← ' ',⍨,∘⍕∘⎕UCS
+     train ← ''''{⊃,/3⍴¨@(⍺∘=)⍵}train
 
-    (f∆n m∆n d∆n) ← ' primitive∆'∘Name¨¨f m∆op d∆op
-    (s∆n)         ← ' slash∆'∘Name¨slashes
+     p∆fn ← '+-×÷⌈⌊*⍟|!○~∨∧⍱⍲<≤=≥>≠≡≢⍴,⍪⍳↑↓?⍒⍋⍉⌽⊖∊⊥⊤⍎⍕⌹⊂⊃∪∩⍷⌷⊆⊣⊢⍸'
+     m∆op ← '/⌿\⍀¨&⍨⌶⌸'
+     d∆op ← '.@∘⍛⍣⍥⍠⍤⌺'
+     s∆fn ← '/⌿\⍀'
+     u∆fn ← ⎕C ⎕A
 
-    _Lit←⍠'Regex' 0
-    train ← ((,d∆op∘.,slashes)⎕R(,d∆op∘.,s∆n,¨' ')_Lit)train ⍝ @/
+     Pad  ← '('∘,,∘')'
+     F    ← ⊃,/
+     Name ← {' ',(⍺,⍕⎕UCS ⍵),' '}
 
-    _Assign_ ← {⍎F ⍺ ⍺⍺(⍕⍵)⍵⍵}
-    (f∆n,s∆n)('←{⍺←⊢ ⋄ r ← (⍕⍺),'''_Assign_''',(⍕⍵) ⋄ ⍬≢⍵: Pad r ⋄ r}')¨f,slashes
+     p∆n←'∆'Name¨p∆fn ⋄ m∆n←'∆'Name¨m∆op ⋄ d∆n←'∆'Name¨d∆op ⋄ u∆n←'∆'Name¨u∆fn ⋄ s∆n←'⍙'Name¨s∆fn
 
-    (m∆n)('←{⍺←⊢ ⋄ F Pad ⍺(⍺⍺ ⍬)'''_Assign_'''        ⍵}')¨m∆op
-    (d∆n)('←{⍺←⊢ ⋄ F Pad ⍺(⍺⍺,⍬)'''_Assign_''' (⍵⍵,⍬) ⍵}')¨d∆op
+     ∆RANK  ← {⍺←⊢ ⋄ Pad ⍺,(Pad(⍕⍺⍺,⍬),'⍤',(⍕⍵⍵,⍬)),⍵}
+     ∆OUTER ← {⍺←⊢ ⋄ Pad ⍺,     (⍺⍺   ,'.',(⍕⍵⍵,⍬)),⍵}
 
-    P9064 ← {⍺←⊢ ⋄ ⍵≡⍬: F (⍺⍺ ⍬)'⍨'       ⋄ ⍺ (⍺⍺⍨)   ⍵}
-    P9061 ← {⍺←⊢ ⋄ ⍵≡⍬: F (⍺⍺ ⍬)'⍥'(⍵⍵ ⍬) ⋄ ⍺ ⍺⍺⍥⍵⍵   ⍵}
-    P8728 ← {⍺←⊢ ⋄ ⍵≡⍬: F (⍺⍺ ⍬)'∘'(⍵⍵ ⍬) ⋄ ⍺ ⍺⍺∘⍵⍵   ⍵}
-    P9060 ← {⍺←⊢ ⋄ ⍵≡⍬: F (⍺⍺ ⍬)'⍤'(⍵⍵ ⍬) ⋄ ⍺ ⍺⍺⍤⍵⍵   ⍵}
-    P9051 ← {⍺←⊢ ⋄ ⍵≡⍬: F (⍺⍺ ⍬)'⍛'(⍵⍵ ⍬) ⋄ ⍺ ⍵⍵⍨∘⍺⍺⍨ ⍵}
+     _Lit  ← ⍠'Regex' 0
+     train ← ((,d∆op∘.,s∆fn)⎕R(,d∆op∘.,s∆n)    _Lit)train ⍝ @/
+     train ← (     ('⍤',¨⎕D)⎕R(' ∆RANK '∘,¨⎕D )_Lit)train ⍝ ⍤X
+     train ← (          '∘.'⎕R('''∘'' ∆OUTER ')_Lit)train ⍝ ∘.
 
-    Fun ← ⍎((,¨f,m∆op,d∆op)⎕R(f∆n,m∆n,d∆n)_Lit)train
+     _Assign_←{⍎F ⍺ ⍺⍺(⍕⍵)⍵⍵}
+     (p∆n,u∆n,s∆n)('←{⍺←⊢ ⋄ r ← (⍕⍺),'''_Assign_''',(⍕⍵) ⋄ ⍬≢⍵: Pad r ⋄ r}')¨p∆fn,u∆fn,s∆fn
 
-    expr ← (Fun '⍵')(⊣⍣(valence=1))('⍺'Fun'⍵')
-    expr ← ('\((⍺)⊣⍵\)' '\(⍺?⊢(⍵)\)'⎕R'\1')expr
+     (m∆n)('←{⍺←⊢ ⋄ F Pad ⍺(⍕⍺⍺,⍬)'''_Assign_'''         ⍵}')¨m∆op
+     (d∆n)('←{⍺←⊢ ⋄ F Pad ⍺(⍕⍺⍺,⍬)'''_Assign_''' (⍕⍵⍵,⍬) ⍵}')¨d∆op
+
+     ∆9051←{⍺←⍵ ⋄ ⍵≡⍬:F(⍕⍺⍺,⍬)'⍛'(⍕⍵⍵,⍬) ⋄ ⍵ ⍵⍵⍨⍺⍺ ⍺}
+     ∆9064←{⍺←⍵ ⋄ ⍵≡⍬:F(⍕⍺⍺,⍬)'⍨'        ⋄ ⍵(⍕⍺⍺⊣⊢)⍺}
+     ∆9061←{⍺←⊢ ⋄ ⍵≡⍬:F(⍕⍺⍺,⍬)'⍥'(⍕⍵⍵,⍬) ⋄ ⍺(⍺⍺⍥⍵⍵)⍵}
+     ∆8728←{⍺←⊢ ⋄ ⍵≡⍬:F(⍕⍺⍺,⍬)'∘'(⍕⍵⍵,⍬) ⋄ ⍺(⍺⍺∘⍵⍵)⍵}
+     ∆9060←{⍺←⊢ ⋄ ⍵≡⍬:F(⍕⍺⍺,⍬)'⍤'(⍕⍵⍵,⍬) ⋄ ⍺(⍺⍺⍤⍵⍵)⍵}
+
+     train←(('''[^'']+''' ,⍥⊆ u∆fn,(' *\'∘,¨p∆fn,m∆op,d∆op))⎕R('&',u∆n,p∆n,m∆n,d∆n))train
+
+     :If valence=1 ⋄ expr←(⍎train)'⍵' ⋄ :Else ⋄ expr←'⍺'(⍎train)'⍵' ⋄ :EndIf
+     expr←('\((⍺)⊣⍵\)' '\(⍺?⊢(⍵)\)'⎕R'\1')expr
 
  :EndWith
 ∇
