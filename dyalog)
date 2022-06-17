@@ -1,11 +1,13 @@
-#!/usr/local/bin/dyalogscript
+#!/usr/local/bin/dyalogscript SESSION_FILE=/opt/mdyalog/18.2/64/unicode/default.dse
 Ï ← 2 ⎕FIX 'file://',⊢
 
 Ï 'Safe.dyalog' ⋄ Ï 'cmd.apl' ⋄ Ï 'explain.aplf' ⋄ Ï 'help.aplf' ⋄ 'display'⎕cy'dfns'
 
+⎕SE.UCMD'rows off'
+
 ∇ r ← Exec expr;ns
 
-    ns ← ⎕NS ⍬ ⋄ ns.display ← display ⋄ ns.explain ← Explain ⋄ ns.help ← Help
+    ns ← ⎕NS '' ⋄ ns.display ← display ⋄ ns.explain ← Explain ⋄ ns.help ← Help ''
     
     :Trap 0
         r←5 ns Safe.Exec expr
@@ -24,9 +26,9 @@
 
 Shrink ← { 
     w ← ⊃,/⍵ ⋄ n ← ≢w ⋄ lens ← ≢¨⍵
-    lim ← 2000((3-⍨⊣)-+.>)+\1,lens
+    lim ← 1995(⊣-+.>)+\1,lens
     lim > n : ⍵
     '```' ,∘⊂⍨ w⊆⍨n↑lim↑⍸lens
 }
 
-⎕ ← 1 ⎕JSON Shrink ⊃,/{(⊂'```'),((⊂⍤¯1) ⎕FMT Exec ⍵),⊂'```'}¨ ⍎ 2 ⎕NQ # 'GetEnvironment',⊂'expr'
+⎕ ← 1 ⎕JSON Shrink ⊃,/{(⊂'```'),((⊂⍤¯1) ⎕FMT Exec ⍵),⊂'```'}¨ ~∘(⊂'') ⍎ 2 ⎕NQ # 'GetEnvironment',⊂'expr'

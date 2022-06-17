@@ -13,4 +13,4 @@ E.g: If X `dyalog) 'Hello, '` otherwise Y: `dyalog) ' World!'`
 
 "dyalog)" Can also interface with Adeline's "commands".
 
-To list them: `dyalog) help`
+To list them: `dyalog) ]help`

@@ -1,8 +1,6 @@
 ∇  expr←{valence}Explain train
  :With ⎕NS'' ⋄ valence←{0::1 ⋄ valence}''
 
-     train ← ''''{⊃,/3⍴¨@(⍺∘=)⍵}train
-
      p∆fn ← '+-×÷⌈⌊*⍟|!○~∨∧⍱⍲<≤=≥>≠≡≢⍴,⍪⍳↑↓?⍒⍋⍉⌽⊖∊⊥⊤⍎⍕⌹⊂⊃∪∩⍷⌷⊆⊣⊢⍸'
      m∆op ← '/⌿\⍀¨&⍨⌶⌸'
      d∆op ← '.@∘⍛⍣⍥⍠⍤⌺'
@@ -11,7 +9,7 @@
 
      Pad  ← '('∘,,∘')'
      F    ← ⊃,/
-     Name ← {' ',(⍺,⍕⎕UCS ⍵),' '}
+     Name ← {' ',(⍺,(⍕⎕UCS ⍵)),' '}
 
      p∆n←'∆'Name¨p∆fn ⋄ m∆n←'∆'Name¨m∆op ⋄ d∆n←'∆'Name¨d∆op ⋄ u∆n←'∆'Name¨u∆fn ⋄ s∆n←'⍙'Name¨s∆fn
 
@@ -23,11 +21,13 @@
      train ← (     ('⍤',¨⎕D)⎕R(' ∆RANK '∘,¨⎕D )_Lit)train ⍝ ⍤X
      train ← (          '∘.'⎕R('''∘'' ∆OUTER ')_Lit)train ⍝ ∘.
 
-     _Assign_←{⍎F ⍺ ⍺⍺(⍕⍵)⍵⍵}
+     _Assign_←{⍎F ⍺ ⍺⍺ ⍵ ⍵⍵}
      (p∆n,u∆n,s∆n)('←{⍺←⊢ ⋄ r ← (⍕⍺),'''_Assign_''',(⍕⍵) ⋄ ⍬≢⍵: Pad r ⋄ r}')¨p∆fn,u∆fn,s∆fn
+             (m∆n)('←{⍺←⊢ ⋄ F Pad ⍺(⍕⍺⍺,⍬)'''_Assign_'''         ⍵}')¨m∆op
+             (d∆n)('←{⍺←⊢ ⋄ F Pad ⍺(⍕⍺⍺,⍬)'''_Assign_''' (⍕⍵⍵,⍬) ⍵}')¨d∆op
 
-     (m∆n)('←{⍺←⊢ ⋄ F Pad ⍺(⍕⍺⍺,⍬)'''_Assign_'''         ⍵}')¨m∆op
-     (d∆n)('←{⍺←⊢ ⋄ F Pad ⍺(⍕⍺⍺,⍬)'''_Assign_''' (⍕⍵⍵,⍬) ⍵}')¨d∆op
+     ∆8866←{⍺←⍵ ⋄ ⍵≡⍬:F(⍕⍺)'⊣'(⍕⍵) ⋄ ⍵⊣⍥⍕⍺}
+     ∆8867←{⍺←⍵ ⋄ ⍵≡⍬:F(⍕⍺)'⊢'(⍕⍵) ⋄ ⍵⊢⍥⍕⍺}
 
      ∆9051←{⍺←⍵ ⋄ ⍵≡⍬:F(⍕⍺⍺,⍬)'⍛'(⍕⍵⍵,⍬) ⋄ ⍵ ⍵⍵⍨⍺⍺ ⍺}
      ∆9064←{⍺←⍵ ⋄ ⍵≡⍬:F(⍕⍺⍺,⍬)'⍨'        ⋄ ⍵(⍕⍺⍺⊣⊢)⍺}
@@ -35,10 +35,9 @@
      ∆8728←{⍺←⊢ ⋄ ⍵≡⍬:F(⍕⍺⍺,⍬)'∘'(⍕⍵⍵,⍬) ⋄ ⍺(⍺⍺∘⍵⍵)⍵}
      ∆9060←{⍺←⊢ ⋄ ⍵≡⍬:F(⍕⍺⍺,⍬)'⍤'(⍕⍵⍵,⍬) ⋄ ⍺(⍺⍺⍤⍵⍵)⍵}
 
-     train←(('''[^'']+''' ,⍥⊆ u∆fn,(' *\'∘,¨p∆fn,m∆op,d∆op))⎕R('&',u∆n,p∆n,m∆n,d∆n))train
+     train←((('''[^'']+''') ,⍥⊆ u∆fn,(' *\'∘,¨p∆fn,m∆op,d∆op))⎕R('&',u∆n,p∆n,m∆n,d∆n))train
 
-     :If valence=1 ⋄ expr←(⍎train)'⍵' ⋄ :Else ⋄ expr←'⍺'(⍎train)'⍵' ⋄ :EndIf
-     expr←('\((⍺)⊣⍵\)' '\(⍺?⊢(⍵)\)'⎕R'\1')expr
+     :If valence≡1 ⋄ expr←(⍎train)'⍵' ⋄ :Else ⋄ expr←'⍺'(⍎train)'⍵' ⋄ :EndIf
 
  :EndWith
 ∇
