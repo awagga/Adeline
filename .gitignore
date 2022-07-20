@@ -1,3 +1,4 @@
 node_modules/
 package-lock.json
-Safe.dyalog
+docs
+safe.dyalog
