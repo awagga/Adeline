@@ -1,4 +1,5 @@
 :NameSpace Message
+'display'⎕cy'dfns'
 
 Ⓤ ← {⍺←⊢ ⋄ f←⍺⍺ ⋄ g←⍵⍵ ⋄ ⍺(g⍣¯1 f⍥g)⍵}
 ⍙ ← {⍺←⊢ ⋄ ⍺(⍺⍺⍤¯1 0 99 )⍵}
@@ -26,9 +27,12 @@ UCMD ← {(1↓⍺),⍵}{ u ← ⍺(⊢ ⊂⍨∘≠ Mrk)⍵,' ' ⋄ 1 0≡(⊂�
 
 Parse ← { ~∘(⊂'') ((⍸⍺∘Mrk)⌷⍙⊢)¨⍵ }
 
-Shrink ← { w ← ⊃,/⍵ ⋄ w ⊆⍨ (≢w) ↑ (⍸ ↑⍨ 2000 (⊣-+.>) +\) ≢¨⍵ }
+Shrink ← { w ← ⊃,/⍵ ⋄ w ⊆⍨ (≢w) ↑ (⍸ ↑⍨ ⍺ (⊣-+.>) +\) ≢¨⍵ }
+
+Lines  ← {⊃,⍥⊆/'```'(⊂⍤¯1 ⎕FMT⍵)'```'}
 
 ⍝ Recieves a possibly formatted command, returns APL-strings (to be executed).
-Handle ← {1 ⎕JSON Shrink ⊃,/{(⊂'```'),(⊂⍤¯1 ⎕FMT ⍎⍵),⊂'```'}¨ 'dyalog)' Parse Format⍵}
+
+Handle ← {1 ⎕JSON 2000 Shrink ⊃,/(Lines∘display∘{0::⎕DMX.Message ⋄ ⍎⍵})¨ 'dyalog)' Parse Format⍵}
 
 :EndNameSpace
